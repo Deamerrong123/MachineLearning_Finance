@@ -1,3 +1,4 @@
+"hello this is an updated"
 
 library(quantmod)
 getSymbols("AAPL", from='2010-01-01')
