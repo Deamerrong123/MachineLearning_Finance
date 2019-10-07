@@ -1,0 +1,64 @@
+---
+title: "K-means Cluster Analysis"
+output: html_notebook
+---
+
+### Replication Requirements
+To replicate this tutorial's analysis we need to load the following packages:
+```{r}
+library(tidyverse) # data manipulation
+library(cluster) # clustering algorithms
+library(factoextra) # clustering algorithms & visualization
+```
+
+
+### Data preparation
+The build-in R dataset *USArrest* is used as demo data.
+  - Remove missing data
+  - Scale variables to make them comparable
+```{r}
+# load data
+data('USArrests')
+my_data <- USArrests
+
+# Remove any missing value (i.e NA values for not available)
+my_data <- na.omit(my_data)
+
+# Scale variables
+my_data <- scale(my_data)
+
+# View the first 3 rows
+head(my_data , n =3)
+```
+
+### Clarifying distance measures
+The classification of obseravation into group, requires some methods measuring the distance or the (dis)similiarity between the observations. The result of this computation is known as a dissilimarity of distance matrix. There are many methods to calculate this distance information; the choice of distance measures is a critical step in clustering. It defines how the similarity of two elements (x,y) is calcuated and it will influence the shape of the clusters.
+
+The choice of distance measures is a critical step in clustering. It defines how the similarity of two elements (x,y) is calculated it will influence the shape of the clusters. The classical methods for distance measures are *Euclidean* and *Manhattan distances*, which are defined as follow:
+**Euclidean distance**:
+      $d_euc(x,y) = \sqrt{\sum_{i=1}^{n}{(x_i-y_i)^2}}$ (1)
+      
+**Manhattan distance**:
+      $d_man(x,y) = \sum_{i=1}^{n}{|x_i-y_i|}$
+      
+Where, x and y are two vectors of length n.
+
+Other dissimilarity measures exist such as correlation-based distances, which is widely used for gene expression data analyses. Correlation-based distance is defined by substracting the correlation coefficient from 1. Different types of correlation methods can be used such as:
+
+**Perason correlation distance**:
+      $d_cor(x,y) = 1 - \frac{\sum_{i=1}^n{(x_i-\bar{x})(y_i-\bar{y})}}{\sqrt{\sum_{i=1}^n{(x_i-\bar{x})^2\sum_{i=1}^n(y_i-\bar{y})^2}}}$
+      
+**Spearman correlation distance**:
+      $$
+      
+    
+      
+      
+      
+      
+      
+      
+      
+      
+      
+    
