@@ -28,7 +28,7 @@ my_data <- na.omit(my_data)
 my_data <- scale(my_data)
 
 # View the first 3 rows
-head(my_data , n =3)
+head(my_data)
 ```
 
 ### Clarifying distance measures
@@ -36,22 +36,43 @@ The classification of obseravation into group, requires some methods measuring t
 
 The choice of distance measures is a critical step in clustering. It defines how the similarity of two elements (x,y) is calculated it will influence the shape of the clusters. The classical methods for distance measures are *Euclidean* and *Manhattan distances*, which are defined as follow:
 **Euclidean distance**:
-      $d_euc(x,y) = \sqrt{\sum_{i=1}^{n}{(x_i-y_i)^2}}$ (1)
+      $d_{euc}(x,y) = \sqrt{\sum_{i=1}^{n}{(x_i-y_i)^2}}$ (1)
       
 **Manhattan distance**:
-      $d_man(x,y) = \sum_{i=1}^{n}{|x_i-y_i|}$
+      $d_{man}(x,y) = \sum_{i=1}^{n}{|x_i-y_i|}$
       
 Where, x and y are two vectors of length n.
 
 Other dissimilarity measures exist such as correlation-based distances, which is widely used for gene expression data analyses. Correlation-based distance is defined by substracting the correlation coefficient from 1. Different types of correlation methods can be used such as:
 
 **Perason correlation distance**:
-      $d_cor(x,y) = 1 - \frac{\sum_{i=1}^n{(x_i-\bar{x})(y_i-\bar{y})}}{\sqrt{\sum_{i=1}^n{(x_i-\bar{x})^2\sum_{i=1}^n(y_i-\bar{y})^2}}}$
+      $d_{cor}(x,y) = 1 - \frac{\sum_{i=1}^n{(x_i-\bar{x})(y_i-\bar{y})}}{\sqrt{\sum_{i=1}^n{(x_i-\bar{x})^2\sum_{i=1}^n(y_i-\bar{y})^2}}}$
       
 **Spearman correlation distance**:
-      $$
-      
-    
+      $d_{spear}(x,y) = 1 - \frac{\sum_{i=1}^n{(x'_i - \bar{x'})(y'_i-\bar{y'})}}{\sum_{i=1}^n{(x'_i - \bar{x'})^2\sum_{i=1}^n{(y'_i-\bar{y'})^2}}}$
+  Where $x'_i = rank(x_i)$ and $y'_i = rank(y_i)$.
+  
+**Kendall correlation distance**:
+  Kendal correlation method mesuares the correspondence between the ranking of x and y variable. The total number of possible pairings of x with y observations is $n(n-1)/2$, where n is the size of x and y. Begin by ording the pairs by the x values. If x and y are correlated, then they would have the same relative rank orders. Now, for each $y_i$, count the number of $y_j < y_i$ (discordant pairs (d)).
+  
+  Kendall correlation distance is defined as follow:
+    $d_{kend} (x,y) = 1 - \frac{n_c-n_d}{1/2n(n-1)}$
+  The choice of distance measures is very important, as it has a strong influence on the clstering results. For most common clustering software, the dafault distance measure is the Euclidean distance. However, depending on the type of the data and the research questions, other dissimilarity measures might be preferred and you should be aware of the options.
+
+Within R it is simple to compute and visualize the distance matrix using the function $\color{red}{\text{get_dist}}$ and $\color{red}{\text{fviz_dist}}$ from the $\color{red}{\text{factoextra}}$ R package. This starts to illustrate which states have large dissimilarities(red) versus those that appear to be fairly fimilar(red).
+  - $\color{red}{\text{get_dist}}$ : for computing a distance matrix between the rows of a data matrix. The default distance computed is the Euclidean; however,
+  - $\color{red}{\text{get_dist}}$ also supports distanced described in equations 2-5 above plus others.
+  - $\color{red}{\text{fviz_dist}}$ : for visualizing a distance matrix
+
+```{r}
+distance <- get_dist(my_data)
+fviz_dist(distance,gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))
+```
+
+  
+### K-Means Clustering
+
+Commonly used unsupervised machine learning algorithm for partitioning a given data set into a set of _k_ groups (i.e. k clusters), where _k_ represents the number of groups pre-specified by the analyst. It classifies objects in multiple groups (i.e., clusters), such that objects within the same cluster are as similar as possible (i.e., high intra-class similarity), whereas objects from different clusters are as dissimilar as possible (i.e. low inter-class similarity). In K-means clustering, each cluster is represented by its center (i.e, centroid) which corresponds to the mean of points assigned to the cluster.
       
       
       
