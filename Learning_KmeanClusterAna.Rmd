@@ -25,7 +25,7 @@ my_data <- USArrests
 my_data <- na.omit(my_data)
 
 # Scale variables
-my_data <- scale(my_data)
+# my_data <- scale(my_data)
 
 # View the first 3 rows
 head(my_data)
@@ -130,7 +130,7 @@ If we print the result we'll see that our grouping resulted in 2 cluster sizes o
 k2
 ```
 
-We can also view our results by using $\color{red}{fviz_cluster}$. This provides a nice illustration of the clusters. If there are more than two dimensions(variables) $\color{red}{fviz_cluster}$ will perform principal component analysis (PCA) and plot the data points according to the first tow principal components that explain the majority of the variance.
+We can also view our results by using $\color{red}{fviz\_cluster}$. This provides a nice illustration of the clusters. If there are more than two dimensions(variables) $\color{red}{fviz\_cluster}$ will perform principal component analysis (PCA) and plot the data points according to the first tow principal components that explain the majority of the variance.
 ```{r}
 fviz_cluster(k2,data = my_data)
 ```
