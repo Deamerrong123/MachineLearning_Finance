@@ -24,11 +24,16 @@ my_data <- USArrests
 # Remove any missing value (i.e NA values for not available)
 my_data <- na.omit(my_data)
 
-# Scale variables
-# my_data <- scale(my_data)
-
 # View the first 3 rows
 head(my_data)
+
+# Scale variables
+#my_data <- scale(my_data)
+
+# view the first 6 rows
+#head(my_data, n = 6)
+
+
 ```
 
 ### Clarifying distance measures
