@@ -1,0 +1,104 @@
+---
+title: "ML_Finance"
+output: html_notebook
+---
+
+
+### Introduction
+
+Our goal is to investigate about stocks' behavior over a fixed period, i.e. 10 years range, from _2010-01-01_ to _2014-01-03_. We are runing *K-mean Cluster*, in distinguishing into difference group that base on each stock's fluctuation. Linear(or Log)-return is the easiest one that can illurstrate about the behavior of a stock over time. And it is easy to compute, which is the ratio between the price difference and the previous price.
+
+We are using package *quantmod* , and function *getSymbol()* to download the data from the **yahoo** or **google finance**. So, we need to need all the Symbols of each stock, since different stocks have a unique abbrevation. 
+
+```{r message=F}
+# install.packages('quantmod')
+## uncommond above to install quantomod
+library(quantmod)
+```
+
+### Loading data
+
+First, we need to load the symbols list:
+
+```{r message=F}
+NASDAQ <- read.delim("C:/Users/QIZHAOR/Desktop/PROGRAM/R/ML_Fin/NASDAQ.txt", header=FALSE)
+symbols <-as.vector(factor(NASDAQ$V1))
+```
+
+Then, we need to define some function for computing the daily ruturn of the stock.
+```{r}
+daFa <- data.frame()
+get.linRtn <- function(trick,From,To){
+  symbol <- getSymbols(trick, from = From , to = To,
+                       auto.assign = F,warnings = F)
+  
+  data <- as.data.frame(periodReturn(symbol, period = 'daily'))
+  colnames(data) <- as.character(paste(trick,"Linrtn"))
+  assign(trick,data, .GlobalEnv)
+}
+```
+
+Since there are more than thousands of symbols and includind 10 years times, the data set is huge. One of the solution is to *Sampling* some stock for particularly investigating. We need to set up the sampling seed, for making our experiment be consistency.
+
+```{r}
+set.seed(400)
+```
+
+we are about to draw 30 symbols from the list at random.
+
+```{r}
+assets <- sample(symbols,30)
+```
+
+From now no, we are woring on these 30 stocks behaviors, and try to distinguish their behavior over a period of time.
+
+We need to specify the time range:
+
+```{r}
+From <- '2018-01-01'
+To <- '2019-01-01'
+```
+
+We are using for-loop and the function defined aboved to generate the data we want:
+
+```{r}
+for (asset in assets){
+  get.linRtn(asset,From,To)
+}
+```
+
+
+
+```{r}
+my_function <- function(t){
+  as.vector(data.frame(eval(parse(text = t))))
+}
+
+daFa <- as.data.frame(lapply(assets, my_function))
+str(daFa)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
