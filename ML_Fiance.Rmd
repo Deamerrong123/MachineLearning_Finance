@@ -28,8 +28,8 @@ symbols <-as.vector(factor(NASDAQ$V1))
 Then, we need to define some function for computing the daily ruturn of the stock.
 ```{r}
 daFa <- data.frame()
-get.linRtn <- function(trick,From,To){
-  symbol <- getSymbols(trick, from = From , to = To,
+get.linRtn <- function(trick,From){
+  symbol <- getSymbols(trick, from = From,
                        auto.assign = F,warnings = F)
   
   data <- as.data.frame(periodReturn(symbol, period = 'daily'))
@@ -55,15 +55,15 @@ From now no, we are woring on these 30 stocks behaviors, and try to distinguish 
 We need to specify the time range:
 
 ```{r}
-From <- '2018-01-01'
-To <- '2019-01-01'
+From <- '2019-01-01'
+#To <- '2019-01-01'
 ```
 
 We are using for-loop and the function defined aboved to generate the data we want:
 
 ```{r}
 for (asset in assets){
-  get.linRtn(asset,From,To)
+  get.linRtn(asset,From)
 }
 ```
 
@@ -75,10 +75,46 @@ my_function <- function(t){
 }
 
 daFa <- as.data.frame(lapply(assets, my_function))
-str(daFa)
 ```
 
 
+### Clustering
+
+There are three packages are using:
+
+```{r message = F}
+# install.packages(c("tidyverse","cluster","factoextra")) ## uncommond to installs
+library(tidyverse) # data manipulation
+library(cluster) # clustering algorithms
+library(factoextra) # clustering algorithms & visualization
+```
+
+let's see clustering with **k = 2**:
+
+_note: first that we need to transform the data.frame so that row contain the stocks, the columns contain the features. Here, the feature we are going to investigate is each stock's daily return.
+
+```{r}
+daFa <- t(daFa)
+daFa
+```
+
+```{r}
+k2 <- kmeans(daFa,centers = 3 , nstart = 15)
+str(k2)
+```
+
+vizionlized : 
+```{r}
+fviz_cluster(k2,data = daFa)
+```
+
+
+```{r}
+k2$cluster
+```
+```{r}
+
+```
 
 
 
