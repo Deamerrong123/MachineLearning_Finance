@@ -1,5 +1,5 @@
 ---
-title: "ML_Finance"
+title: "ML_LineaRturn_Finance"
 output: html_notebook
 ---
 
@@ -111,9 +111,6 @@ fviz_cluster(k2,data = daFa)
 
 ```{r}
 k2$cluster
-```
-```{r}
-
 ```
 
 

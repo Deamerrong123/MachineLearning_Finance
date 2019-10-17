@@ -1,0 +1,109 @@
+---
+title: "ML_loadData"
+output: html_notebook
+---
+
+## Clustering in *S&P500*
+
+Finally, we have nail down our taget is **S&P 500**. Our goal is to investigate the relationship between those stocks as a whole. The main theme of this project is working on clustering. Clustering of stocks base on their histortical data.
+
+
+### Readying with data
+
+We are using *quantmod* for downloading each stock's data. *getSymbols()* is a useful function for downloading the stock's historical prices and other useful data base on stock's unique **symbol**. 
+
+First, we need to know all of *S&P500* stocks' symbols. We download a _CSV_ file which contains S&P 500 Companies with Financial Information. And we need to convert it into a _txt_ file, is easy to import into R. ( [Datahub](https://datahub.io/core/s-and-p-500-companies) ). 
+```{r}
+S.P500 <- read.delim("C:/Users/QIZHAOR/Desktop/PROGRAM/R/ML_Fin/S&P500.txt")
+```
+
+Take a look at the data, using *head()* function :
+
+```{r}
+head(S.P500)
+```
+
+We symbols neme from the *Symbol* column:
+
+```{r}
+Symbols <- sapply(S.P500$Symbol,as.character,simplify = 'array')
+
+```
+
+let's prepare the library we are using:
+```{r message = FALSE}
+library(quantmod)
+```
+
+Before going to download all 500+ data sets, we need to speicify some *date*, i.e. the starting date and the endding date. We need to specify, *From*, a character that stands for the starting date; and *To*, a character that stands for the endding date. 
+
+We want to set, might be all of them start even later that, '1930-01-01' as the starting date; and set the '2019-08-01' as the endding month.
+
+```{r}
+From <- '1930-01-01'
+To <- '2019-08-01'
+```
+
+Then, we are ready to load the data:
+
+```{r}
+Data <- sapply(Symbols,getSymbols,from = From , to = To, USE.NAMES = FALSE,simplify = 'array')
+```
+
+### Dicussion : Loading Error
+
+In this area, we are going to arise issues that we have encounter with.
+  - when are going to downloading stock's data by using their symbols, we found the listed below *symbols* are invaild:
+    - "APC"
+```{r}
+## getSymbols("APC")
+```
+    So, one solution that is do not bother it :
+```{r}
+Symbols <- Symbols[Symbols != "APC"]
+```
+    - Another one *"BRK.B"*:
+```{r}
+#getSymbols("BRK.B")
+```
+```{r}
+Symbols <- Symbols[Symbols != 'BRK.B']
+```
+    - *"BF.B"*
+```{r}
+Symbols <- Symbols[Symbols != 'BF.B']
+```
+    - *“DWDP”*
+```{r}
+Symbols <-Symbols[Symbols != "DWDP"]
+```
+    - *"DPS"*
+```{r}
+Symbols <- Symbols[Symbols != "DPS"]
+```
+    -*"GGP"*
+```{r}
+Symbols <- Symbols[Symbols != "GGP"]
+```
+    
+    
+
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
